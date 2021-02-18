@@ -1,7 +1,7 @@
 (foreign-declare "#include <libusb.h>")
 
-(define-foreign-type vid short)
-(define-foreign-type pid short)
+(define-foreign-type vid unsigned-short)
+(define-foreign-type pid unsigned-short)
 
 (define-foreign-type libusb-ctx (c-pointer "libusb_context"))
 (define-foreign-type libusb-handle (c-pointer "libusb_device_handle"))
