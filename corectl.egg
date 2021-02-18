@@ -1,6 +1,7 @@
 ((author "Sören Tempel")
  (synopsis "Control LEDs on Core Mechanics project 0001")
  (license "GPLv3")
+ (dependencies srfi-4)
  (components
  (extension corectl
   (source "corectl.scm")

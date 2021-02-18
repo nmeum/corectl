@@ -24,7 +24,7 @@
     "libusb_interrupt_transfer"
     libusb-handle
     unsigned-byte
-    (c-pointer unsigned-byte)
+    nonnull-u8vector
     int
     (c-pointer int)
     unsigned-int))
