@@ -1,4 +1,4 @@
 (module corectl ()
   (import scheme (chicken base) (chicken module) (chicken foreign))
 
-  (include "corectl/libusb.scm"))
+  (include "corectl/ffi.scm"))
