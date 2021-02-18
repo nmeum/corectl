@@ -6,6 +6,7 @@
  (extension corectl
   (source "corectl.scm")
   (source-dependencies
-    "./corectl/ffi.scm")
+    "./corectl/ffi.scm"
+    "./corectl/libusb.scm")
   (csc-options "-I/usr/include/libusb-1.0")
   (link-options "-L" "-lusb-1.0"))))
