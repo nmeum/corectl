@@ -1,5 +1,5 @@
 (module corectl ()
-  (import scheme (chicken base) (chicken module) (chicken foreign)
+  (import scheme (chicken base) (chicken condition) (chicken module) (chicken foreign)
           (srfi 1) (srfi 4))
 
   (export libusb-open)
