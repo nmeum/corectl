@@ -45,13 +45,14 @@
         r))))
 
 (define (endpoint-transfer data endpoint)
-  ;; TODO: Check return value
-  ;; TODO: Check amount of transfered bytes
-
-  (libusb-irq-transfer
-    (usb-endpoint-device endpoint)
-    (usb-endpoint-addr endpoint)
-    data
-    (u8vector-length data)
-    nullptr
-    0))
+  (let-location ((t int))
+    (if (not (zero?
+               (libusb-irq-transfer
+                 (usb-endpoint-device endpoint)
+                 (usb-endpoint-addr endpoint)
+                 data
+                 (u8vector-length data)
+                 (location t)
+                 0)))
+      (error "libusb-irq-transfer failed")
+      t)))
