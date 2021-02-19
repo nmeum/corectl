@@ -24,16 +24,24 @@
 
 (define (call-with-usb-endpoint endpoint proc)
   (define dev (usb-endpoint-device endpoint))
+  (define (unclaim-and-close endpoint)
+    (for-each
+      (lambda (i)
+        (libusb-release dev i)) ifs)
+    (close-usb-endpoint endpoint))
 
-  ;; TODO: Exception handling
-  (for-each
-    (lambda (i)
-      (libusb-claim dev i)) ifs)
-  (proc endpoint)
-  (for-each
-    (lambda (i)
-      (libusb-release dev i)) ifs)
-  (close-usb-endpoint endpoint))
+  (with-exception-handler
+    (lambda (x)
+      (unclaim-and-close endpoint))
+    (lambda ()
+      (for-each
+        (lambda (i)
+          (let ((r (libusb-claim dev i)))
+            (when (not (zero? r))
+              (error "libusb-claim failed")))) ifs)
+
+      (proc endpoint)
+      (unclaim-and-close endpoint))))
 
 (define (endpoint-transfer data endpoint)
   ;; TODO: Check return value
