@@ -1,6 +1,6 @@
 (module corectl ()
   (import scheme (chicken base) (chicken module) (chicken foreign)
-          (srfi 4))
+          (srfi 1) (srfi 4))
 
   (export libusb-open)
 
@@ -10,4 +10,5 @@
           call-with-usb-endpoint endpoint-transfer)
 
   (include "corectl/ffi.scm")
-  (include "corectl/libusb.scm"))
+  (include "corectl/libusb.scm")
+  (include "corectl/coremech.scm"))
