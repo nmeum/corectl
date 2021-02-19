@@ -18,13 +18,13 @@
   (make-usb-endpoint vid pid out-addr))
 
 (define (state->number state)
-    (if (number? state)
-      state
-      (cond
-        ((eq? state 'on)      pkt-on)
-        ((eq? state 'off)     pkt-off)
-        ((eq? state 'restore) pkt-restore)
-        (else (error "unknown LED state")))))
+  (if (number? state)
+    state
+    (cond
+      ((eq? state 'on)      pkt-on)
+      ((eq? state 'off)     pkt-off)
+      ((eq? state 'restore) pkt-restore)
+      (else (error "unknown LED state")))))
 
 (define (range upto)
   (if (zero? upto)
