@@ -14,6 +14,9 @@
 (define pkt-off 0)
 (define pkt-restore 2)
 
+(define (make-led-control)
+  (make-usb-endpoint vid pid out-addr))
+
 (define (state->number state)
     (if (number? state)
       state
@@ -46,3 +49,13 @@
       (list pkt-hdr pkt-rw)
       (assoc->list asc)
       padding)))
+
+(define (write-led ctl asc)
+  (if (< num-leds (length asc))
+    (error "invalid association list length")
+    (call-with-usb-endpoint
+      ctl
+      (lambda (endpoint)
+        (endpoint-transfer
+          (serialize asc)
+          endpoint)))))
