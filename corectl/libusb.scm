@@ -40,8 +40,9 @@
             (when (not (zero? r))
               (error "libusb-claim failed")))) ifs)
 
-      (proc endpoint)
-      (unclaim-and-close endpoint))))
+      (let ((r (proc endpoint)))
+        (unclaim-and-close endpoint)
+        r))))
 
 (define (endpoint-transfer data endpoint)
   ;; TODO: Check return value
