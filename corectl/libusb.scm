@@ -36,9 +36,8 @@
     (lambda ()
       (for-each
         (lambda (i)
-          (let ((r (libusb-claim dev i)))
-            (when (not (zero? r))
-              (error "libusb-claim failed")))) ifs)
+          (when (not (zero? (libusb-claim dev i)))
+            (error "libusb-claim failed"))) ifs)
 
       (let ((r (proc endpoint)))
         (unclaim-and-close endpoint)
