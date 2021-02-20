@@ -14,11 +14,21 @@
 (define pkt-off 0)
 (define pkt-restore 2)
 
+(define-record-type <led-control>
+  (%make-led-control in out)
+  led-control?
+
+  (in  led-control-in)
+  (out led-control-out))
+
 (define (make-led-control)
-  (make-usb-endpoint vid pid out-addr))
+  (%make-led-control
+    (make-usb-endpoint vid pid in-addr)
+    (make-usb-endpoint vid pid out-addr)))
 
 (define (close-led-control ctl)
-  (close-usb-endpoint ctl))
+  (close-usb-endpoint (led-control-in ctl))
+  (close-usb-endpoint (led-control-out ctl)))
 
 (define (state->number state)
   (if (number? state)
@@ -57,8 +67,16 @@
   (if (< num-leds (length asc))
     (error "invalid association list length")
     (call-with-usb-endpoint
-      ctl
+      (led-control-out ctl)
       (lambda (endpoint)
         (endpoint-transfer
           (serialize asc)
           endpoint)))))
+
+(define (read-leds ctl)
+  (call-with-usb-endpoint
+    (led-control-in ctl)
+    (lambda (endpoint)
+      (let ((data (make-u8vector num-leds)))
+        (endpoint-transfer data endpoint)
+        data))))
