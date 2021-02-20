@@ -1,8 +1,8 @@
 (define vid #x1c6c)
 (define pid #xa002)
 
-(define in-addr  #x82)
-(define out-addr #x002)
+(define in-addr  #x81)
+(define out-addr #x02)
 
 (define num-leds 6)
 (define data-size 64)
