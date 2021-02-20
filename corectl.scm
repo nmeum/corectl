@@ -8,4 +8,5 @@
 
   (include "corectl/ffi.scm")
   (include "corectl/libusb.scm")
+  (include "corectl/packet.scm")
   (include "corectl/coremech.scm"))
