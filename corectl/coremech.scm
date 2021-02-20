@@ -54,7 +54,7 @@
                             pkt-restore)))))
         '() (range num-leds)))
 
-(define (serialize asc)
+(define (marshal asc)
   (define padding (make-list pkt-pad 0))
 
   (list->u8vector
@@ -70,7 +70,7 @@
       (led-control-out ctl)
       (lambda (endpoint)
         (endpoint-transfer
-          (serialize asc)
+          (marshal asc)
           endpoint)))))
 
 (define (read-leds ctl)
