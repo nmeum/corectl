@@ -14,6 +14,9 @@
 (define pkt-off 0)
 (define pkt-restore 2)
 
+;; Poor man's garbage collection
+(define num-allocs 0)
+
 (define-record-type <led-control>
   (%make-led-control in out)
   led-control?
@@ -22,13 +25,24 @@
   (out led-control-out))
 
 (define (make-led-control)
+  (when (zero? num-allocs)
+    (libusb-init #f)
+    (set! num-allocs (inc num-allocs)))
+
+  ;; TODO: If the second make-usb-endpoint fails, free the first
   (%make-led-control
     (make-usb-endpoint vid pid in-addr)
     (make-usb-endpoint vid pid out-addr)))
 
 (define (close-led-control ctl)
-  (close-usb-endpoint (led-control-in ctl))
-  (close-usb-endpoint (led-control-out ctl)))
+  (begin
+    (close-usb-endpoint (led-control-in ctl))
+    (close-usb-endpoint (led-control-out ctl)))
+
+  (if (zero? (begin
+               (set! num-allocs (dec num-allocs))
+               num-allocs))
+    (libusb-exit #f)))
 
 (define (write-leds ctl asc)
   (if (< num-leds (length asc))

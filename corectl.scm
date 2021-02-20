@@ -2,8 +2,6 @@
   (import scheme (chicken base) (chicken condition) (chicken module) (chicken foreign)
           (srfi 1) (srfi 4))
 
-  (export libusb-init libusb-exit)
-
   (export make-led-control close-led-control write-leds read-leds)
 
   (include "corectl/util.scm")
