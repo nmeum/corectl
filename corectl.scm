@@ -4,8 +4,8 @@
 
   (export make-led-control close-led-control write-leds read-leds)
 
-  (include "corectl/util.scm")
-  (include "corectl/ffi.scm")
-  (include "corectl/libusb.scm")
-  (include "corectl/packet.scm")
-  (include "corectl/coremech.scm"))
+  (include "lib/util.scm")
+  (include "lib/ffi.scm")
+  (include "lib/libusb.scm")
+  (include "lib/packet.scm")
+  (include "lib/corectl.scm"))
