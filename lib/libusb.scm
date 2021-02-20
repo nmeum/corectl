@@ -32,7 +32,8 @@
 
   (with-exception-handler
     (lambda (x)
-      (unclaim endpoint))
+      (unclaim endpoint)
+      (signal x))
     (lambda ()
       (for-each
         (lambda (i)
