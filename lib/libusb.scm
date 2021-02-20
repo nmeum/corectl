@@ -24,25 +24,28 @@
 
 (define (call-with-usb-endpoint endpoint proc)
   (define dev (usb-endpoint-device endpoint))
-  (define (unclaim endpoint)
-    (for-each
-      (lambda (i)
-        (when (not (zero? (libusb-release dev i)))
-          (error "libusb-release failed"))) ifs))
+  (define (conf-if state)
+    (let ((proc (cond
+                  ((eq? state 'claim) libusb-claim)
+                  ((eq? state 'release) libusb-release)
+                  (else (abort "unknown interface state")))))
+      (for-each
+        (lambda (i)
+          (when (not (zero? (proc dev i)))
+            (error "interface state change failed"))) ifs)))
 
-  (let ((r (with-exception-handler
-             (lambda (x)
-               (unclaim endpoint)
-               (signal x))
-             (lambda ()
-               (for-each
-                 (lambda (i)
-                   (when (not (zero? (libusb-claim dev i)))
-                     (error "libusb-claim failed"))) ifs)
-
-               (proc endpoint)))))
-    (unclaim endpoint)
-    r))
+  (let ((r (call-with-current-continuation
+             (lambda (k)
+               (with-exception-handler
+                 (lambda (x)
+                   (conf-if 'release)
+                   (signal x))
+                 (lambda ()
+                   (conf-if 'claim)
+                   (proc endpoint)))))))
+    (if (condition? r)
+      (signal r)
+      (conf-if 'release))))
 
 ;; TODO: Swap arguments
 (define (endpoint-transfer data endpoint)
