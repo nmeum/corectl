@@ -24,15 +24,14 @@
 
 (define (call-with-usb-endpoint endpoint proc)
   (define dev (usb-endpoint-device endpoint))
-  (define (unclaim-and-close endpoint)
+  (define (unclaim endpoint)
     (for-each
       (lambda (i)
-        (libusb-release dev i)) ifs)
-    (close-usb-endpoint endpoint))
+        (libusb-release dev i)) ifs))
 
   (with-exception-handler
     (lambda (x)
-      (unclaim-and-close endpoint))
+      (unclaim endpoint))
     (lambda ()
       (for-each
         (lambda (i)
@@ -40,7 +39,7 @@
             (error "libusb-claim failed"))) ifs)
 
       (let ((r (proc endpoint)))
-        (unclaim-and-close endpoint)
+        (unclaim endpoint)
         r))))
 
 (define (endpoint-transfer data endpoint)

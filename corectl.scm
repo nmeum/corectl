@@ -4,7 +4,7 @@
 
   (export libusb-init libusb-exit)
 
-  (export make-led-control write-led)
+  (export make-led-control close-led-control write-led)
 
   (include "corectl/ffi.scm")
   (include "corectl/libusb.scm")

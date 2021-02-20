@@ -17,6 +17,9 @@
 (define (make-led-control)
   (make-usb-endpoint vid pid out-addr))
 
+(define (close-led-control ctl)
+  (close-usb-endpoint ctl))
+
 (define (state->number state)
   (if (number? state)
     state
