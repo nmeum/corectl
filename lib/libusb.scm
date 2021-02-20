@@ -27,7 +27,8 @@
   (define (unclaim endpoint)
     (for-each
       (lambda (i)
-        (libusb-release dev i)) ifs))
+        (when (not (zero? (libusb-release dev i)))
+          (error "libusb-release failed"))) ifs))
 
   (with-exception-handler
     (lambda (x)
