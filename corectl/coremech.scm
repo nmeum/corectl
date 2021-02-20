@@ -63,7 +63,7 @@
       (assoc->list asc)
       padding)))
 
-(define (write-led ctl asc)
+(define (write-leds ctl asc)
   (if (< num-leds (length asc))
     (error "invalid association list length")
     (call-with-usb-endpoint

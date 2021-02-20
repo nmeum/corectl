@@ -42,6 +42,7 @@
         (unclaim endpoint)
         r))))
 
+;; TODO: Swap arguments
 (define (endpoint-transfer data endpoint)
   (let-location ((t int))
     (if (not (zero?
