@@ -39,6 +39,13 @@
       ((eq? state 'restore) pkt-restore)
       (else (error "unknown LED state")))))
 
+(define (number->state number)
+  (cond
+    ((eq? number pkt-on)      'on)
+    ((eq? number pkt-off)     'off)
+    ((eq? number pkt-restore) 'restore)
+    (else (error "unknown LED state"))))
+
 (define (range upto)
   (if (zero? upto)
     '()
@@ -63,6 +70,16 @@
       (assoc->list asc)
       padding)))
 
+(define (unmarshal data)
+  (if (not (eq? (u8vector-length data) data-size))
+    (error "invalid data length")
+    (let* ((lst (u8vector->list data))
+           (pkt (drop-right lst pkt-pad)))
+      (if (not (eq? (car lst) pkt-hdr))
+        (error "missing packet header")
+        (map number->state
+             (cddr lst)))))) ;; cddr → skip rw field
+
 (define (write-leds ctl asc)
   (if (< num-leds (length asc))
     (error "invalid association list length")
@@ -79,4 +96,4 @@
     (lambda (endpoint)
       (let ((data (make-u8vector num-leds)))
         (endpoint-transfer data endpoint)
-        data))))
+        (unmarshal data)))))
