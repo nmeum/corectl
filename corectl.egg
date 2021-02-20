@@ -6,6 +6,7 @@
  (extension corectl
   (source "corectl.scm")
   (source-dependencies
+    "./corectl/util.scm"
     "./corectl/ffi.scm"
     "./corectl/libusb.scm"
     "./corectl/packet.scm"

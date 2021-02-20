@@ -30,12 +30,6 @@
   (close-usb-endpoint (led-control-in ctl))
   (close-usb-endpoint (led-control-out ctl)))
 
-(define (range upto)
-  (if (zero? upto)
-    '()
-    (let ((i (- upto 1)))
-      (append (range i) (list i)))))
-
 (define (write-leds ctl asc)
   (if (< num-leds (length asc))
     (error "invalid association list length")
