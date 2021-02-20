@@ -30,6 +30,16 @@
                num-allocs))
     (libusb-exit #f)))
 
+(define (call-with-led-ctl ctl proc)
+  (let ((r (with-exception-handler
+             (lambda (x)
+               (close-led-ctl ctl)
+               (signal x))
+             (lambda ()
+               (proc ctl)))))
+    (close-led-ctl ctl)
+    r))
+
 (define (led-ctl-write ctl asc)
   (if (< num-leds (length asc))
     (error "invalid association list length")

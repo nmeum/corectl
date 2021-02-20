@@ -41,8 +41,8 @@
 (define (main)
   (let* ((leds (parse-leds (command-line-arguments)))
          (ctrl (make-led-ctl)))
-    (led-ctl-write ctrl leds)
-    (close-led-ctl ctrl)))
+    (call-with-led-ctl
+      ctrl (lambda (c) (led-ctl-write c leds)))))
 
 (cond-expand
   ((or chicken-script compiling) (main))
