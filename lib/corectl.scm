@@ -17,20 +17,20 @@
 ;; Poor man's garbage collection
 (define num-allocs 0)
 
-(define (make-led-control)
+(define (make-led-ctl)
   (when (zero? num-allocs)
     (libusb-init #f)
     (set! num-allocs (inc num-allocs)))
   (make-usb-endpoint vid pid out-addr))
 
-(define (close-led-control ctl)
+(define (close-led-ctl ctl)
   (close-usb-endpoint ctl)
   (if (zero? (begin
                (set! num-allocs (dec num-allocs))
                num-allocs))
     (libusb-exit #f)))
 
-(define (write-leds ctl asc)
+(define (led-ctl-write ctl asc)
   (if (< num-leds (length asc))
     (error "invalid association list length")
     (call-with-usb-endpoint
