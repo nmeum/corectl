@@ -30,19 +30,19 @@
         (when (not (zero? (libusb-release dev i)))
           (error "libusb-release failed"))) ifs))
 
-  (with-exception-handler
-    (lambda (x)
-      (unclaim endpoint)
-      (signal x))
-    (lambda ()
-      (for-each
-        (lambda (i)
-          (when (not (zero? (libusb-claim dev i)))
-            (error "libusb-claim failed"))) ifs)
+  (let ((r (with-exception-handler
+             (lambda (x)
+               (unclaim endpoint)
+               (signal x))
+             (lambda ()
+               (for-each
+                 (lambda (i)
+                   (when (not (zero? (libusb-claim dev i)))
+                     (error "libusb-claim failed"))) ifs)
 
-      (let ((r (proc endpoint)))
-        (unclaim endpoint)
-        r))))
+               (proc endpoint)))))
+    (unclaim endpoint)
+    r))
 
 ;; TODO: Swap arguments
 (define (endpoint-transfer data endpoint)
