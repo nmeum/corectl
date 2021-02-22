@@ -24,6 +24,7 @@
   (make-usb-endpoint vid pid out-addr))
 
 (define (close-led-ctl ctl)
+  (display "close") (newline)
   (close-usb-endpoint ctl)
   (if (zero? (begin
                (set! num-allocs (dec num-allocs))

@@ -3,7 +3,7 @@
           (chicken module) (chicken foreign)
           (srfi 1) (srfi 4))
 
-  (export make-led-ctl close-led-ctl
+  (export num-leds make-led-ctl close-led-ctl
           call-with-led-ctl led-ctl-write)
 
   (include "lib/util.scm")
