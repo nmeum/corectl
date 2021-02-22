@@ -38,8 +38,7 @@
              (lambda (k)
                (with-exception-handler
                  (lambda (x)
-                   (conf-if 'release)
-                   (signal x))
+                   (conf-if 'release))
                  (lambda ()
                    (conf-if 'claim)
                    (proc endpoint)))))))
