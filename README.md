@@ -14,8 +14,8 @@ command line tool.
 ## Usage
 
 The command-line tool is inspired by the proprietary
-`CoreController.exe` and allows you to turn on/off or restore the
-original state of all six LEDs. Example usage:
+[`CoreController.exe`][core controller] and allows you to turn on/off or
+restore the original state of all six LEDs. Example usage:
 
 	$ corectl LED0:on LED2:off LED5:restore
 
@@ -40,3 +40,4 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 
 [project 0001]: https://core-mechanics.com/produkt/project-0001/
 [libusb website]: https://libusb.info/
+[core controller]: https://penclic.se/wp-content/uploads/2020/09/Core-Mechanics-Project-0001-LED-control.txt
